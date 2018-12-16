@@ -9,6 +9,9 @@
 4. `npm run develop`
 5. In `app.js`, change the serial port location on line 12 to a connected device
 
+![alt text](https://github.com/richarthurs/electron-react-serial-monitor/blob/master/doc/screenshot.png "Screenshot")
+
+
 ## Notes From Development
 npm install of electron-forge failed due to some dependency wanting python 2.7 for a bloody print statement in the install process ... srsly
 

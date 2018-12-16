@@ -9,3 +9,9 @@ build
 \.eslintignore
 
 \.eslintrc
+
+\.prettierrc\.yml
+
+\.travis\.yml
+
+\.vscode/settings\.json

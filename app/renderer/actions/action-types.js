@@ -3,3 +3,6 @@
     */
 
 export const OBC_SERIAL_RX = "OBC_SERIAL_RX";
+export const OBC_SERIAL_RX_DEV = "OBC_SERIAL_RX_DEV";
+export const SEND_COMMAND = "SEND_COMMAND";
+export const SENT_COMMAND = "SENT_COMMAND";

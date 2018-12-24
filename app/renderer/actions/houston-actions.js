@@ -1,4 +1,4 @@
-import { OBC_SERIAL_RX } from "./action-types"; // snag the action type string
+import { OBC_SERIAL_RX, OBC_SERIAL_RX_DEV, SEND_COMMAND, SENT_COMMAND } from "./action-types"; // snag the action type string
 /*  Actions
     - actions return an object with (minimally) a field called "type," which is a string describing the action to take
         - the reducer will switch on the action string to modify the state appropriately
@@ -18,3 +18,14 @@ payload: {
 */
 
 export const obcSerialRX = obcdata_in => ({ type: OBC_SERIAL_RX, payload: {receivedStr: obcdata_in} });
+export const obcSerialRXDev = obcdata_in => ({ type: OBC_SERIAL_RX_DEV, payload: {receivedStr: obcdata_in} });
+
+export function sendCommand(payload){
+    return({type: SEND_COMMAND, payload});
+}
+
+export function sentCommand(payload){
+    return({type: SENT_COMMAND, payload});
+}
+
+// todo: add sendCommand action

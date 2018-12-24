@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/lib/Col'
         - allows state information to be used in the layout
 */
 const mapStateToProps = state => {
-    return { obcdata: state.obcdata};
+    return { timelinedata: state.timelinedata};
   };
 
 
@@ -18,19 +18,20 @@ const mapStateToProps = state => {
     - obcdata prop gets information from the redux store
     - loop through the array, pull out fields, create list items
 */
-const OBCDataList = ({ obcdata }) => (
+const OBCDataList = ({ timelinedata }) => (
     <div>
     <ListGroup>
-        {obcdata.map(obcdata => (
-            <ListGroup.Item key={obcdata.counter}>
+        {timelinedata.map(timelinedata => (
+            <ListGroup.Item key={timelinedata.counter}>
 
             <Row className="show-grid">
             <Col xs={12} md={8}>
-                <Badge pill variant="primary">{obcdata.counter}</Badge>
-                {obcdata.receivedStr} 
+                <Badge pill variant="primary">{timelinedata.counter}</Badge>
+                {timelinedata.receivedStr} 
             </Col>
             <Col xs={6} md={4}>
-                <Badge pill variant="success">{obcdata.IOtype}</Badge>
+                <Badge pill variant="success">{timelinedata.IOtype}</Badge>
+                <Badge pill variant="secondary">{timelinedata.msgType}</Badge>
             </Col>
             </Row>
             </ListGroup.Item>

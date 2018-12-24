@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import Readline from '@serialport/parser-readline'
-import {obcSerialRX} from "./actions/houston-actions";
+import {obcSerialRX, obcSerialRXDev, sentCommand} from "./actions/houston-actions";
 import MainComponent from './components/MainComponent'
+
 const launchpad = '/dev/tty.usbmodemHL512001';
+
 // // Setup the serial port
 // let sp = VirtualSerialPort;
 // // SerialPort.Binding = FakePort;
@@ -41,17 +43,27 @@ sp.on('open', function (err) {
   if (process.env.NODE_ENV == 'development') {
     sp.on("dataToDevice", function(data) {
       // sp.writeToComputer(data + " " + data + "!");
-      store.dispatch(obcSerialRX(data))
+      store.dispatch(obcSerialRXDev(data))
     });
   }
 
-  sp.write("BLOOP"); // "From Arduino: BLOOP BLOOP!"
+  sp.write("BLOOP"); 
 });
 
 setInterval(function() {
   sp.write("BLOOP");
 }, 15 * 1000); // 60 * 1000 milsec
 
+
+function stateChange(){
+  let _state = store.getState();
+  if(_state.commands.length > 0 && _state.command_to_send == true){
+    console.log("Sending command: ", _state.commands[0])
+    store.dispatch(sentCommand());
+  }
+}
+
+store.subscribe(stateChange)
 
 // TODO: SerialPort.list will return good ports
 
@@ -60,8 +72,9 @@ setInterval(function() {
 const rootElement = document.querySelector(document.currentScript.getAttribute('data-container'));
 
 // Render the main component, the parent for everything else on the page
+// Wrap the app and allow redux store access
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={store}>  
     <MainComponent />
   </Provider>,
   rootElement,

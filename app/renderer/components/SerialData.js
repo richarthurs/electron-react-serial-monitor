@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import Badge from 'react-bootstrap/lib/Badge';
 import ListGroup from 'react-bootstrap/lib/ListGroup'
+import Row from 'react-bootstrap/lib/Row'
+import Col from 'react-bootstrap/lib/Col'
 
 /* Map State to Props
     - assign variables from state (the redux store) to this component's props
@@ -21,8 +23,16 @@ const OBCDataList = ({ obcdata }) => (
     <ListGroup>
         {obcdata.map(obcdata => (
             <ListGroup.Item key={obcdata.counter}>
+
+            <Row className="show-grid">
+            <Col xs={12} md={8}>
                 <Badge pill variant="primary">{obcdata.counter}</Badge>
                 {obcdata.receivedStr} 
+            </Col>
+            <Col xs={6} md={4}>
+                <Badge pill variant="success">{obcdata.IOtype}</Badge>
+            </Col>
+            </Row>
             </ListGroup.Item>
         ))}
     </ListGroup>

@@ -13,6 +13,7 @@
     "@babel/register": "^7.0.0",
     "bootstrap": "^4.1.3",
     "connected-react-router": "^5.0.1",
+    "electron-require": "^0.3.0",
     "history": "^4.6.3",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
@@ -24,7 +25,8 @@
     "redux-actions": "^2.2.1",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
-    "serialport": "^7.1.0"
+    "serialport": "^7.1.0",
+    "virtual-serialport": "^4.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

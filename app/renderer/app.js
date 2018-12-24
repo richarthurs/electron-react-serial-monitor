@@ -2,37 +2,59 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-import SerialPort from 'serialport';
 import Readline from '@serialport/parser-readline'
 import {obcSerialRX} from "./actions/houston-actions";
 import MainComponent from './components/MainComponent'
+const launchpad = '/dev/tty.usbmodemHL512001';
+// // Setup the serial port
+// let sp = VirtualSerialPort;
+// // SerialPort.Binding = FakePort;
 
+// const OBCport = new sp(launchpad, {baudRate: 115200}, function() {
+//     console.log('Connected to OBCPort', arguments); 
+//     OBCport.write("BLOOP!");
+// });
 
-// Setup the serial port
-const OBCport = new SerialPort('/dev/tty.usbmodemHL512001', {baudRate: 115200}, function() {
-    console.log('Connected to OBCPort', arguments); 
+// // Parser will emit data events when the delimiter is detected
+// // const parser = OBCport.pipe(new Readline({delimeter: '\r\n'}));
+
+// // Print connection errors
+// OBCport.on('error', function(err) {
+//   console.log('Error: ', err.message)
+// })
+
+var SerialPort = require('serialport').SerialPort;
+
+if (process.env.NODE_ENV == 'development') {
+  SerialPort = require('virtual-serialport');
+}
+
+var sp = new SerialPort(launchpad, { baudrate: 115200 }); // still works if NODE_ENV is set to development!
+
+sp.on('open', function (err) {
+
+  sp.on("data", function(data) {
+    console.log("From Arduino: " + data);
+    store.dispatch(obcSerialRX(data))
+  });
+
+  if (process.env.NODE_ENV == 'development') {
+    sp.on("dataToDevice", function(data) {
+      // sp.writeToComputer(data + " " + data + "!");
+      store.dispatch(obcSerialRX(data))
+    });
+  }
+
+  sp.write("BLOOP"); // "From Arduino: BLOOP BLOOP!"
 });
 
-// Parser will emit data events when the delimiter is detected
-const parser = OBCport.pipe(new Readline({delimeter: '\r\n'}));
+setInterval(function() {
+  sp.write("BLOOP");
+}, 15 * 1000); // 60 * 1000 milsec
 
-// Print connection errors
-OBCport.on('error', function(err) {
-  console.log('Error: ', err.message)
-})
-
-// Raw data logging into the console - re-enable if something is funky
-// OBCport.on('data', function (data) {
-//   console.log('RAW: Data:', data.toString('ascii'))
-// })
 
 // TODO: SerialPort.list will return good ports
 
-// When parsed data is emitted, feed the data to the obcSerialRX action, which will cause it to be appended to the store's obcdata
-parser.on('data', function (data) {
-  console.log('Data:', data)
-  store.dispatch(obcSerialRX(data))  // send out the action with the data
-})
 
 // I think this is just an Electron thing
 const rootElement = document.querySelector(document.currentScript.getAttribute('data-container'));

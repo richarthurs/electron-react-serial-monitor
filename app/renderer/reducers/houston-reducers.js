@@ -17,7 +17,7 @@ const rootReducer = (state = initialState, action) => {
         console.log("Data count:", state.obcdata_count)
         return { ...state, 
                 /* obcdata: append a new object to the existing obcdata list with the following fields: {receivedStr: <string from serial port>, counter: <an integer pulled from the existing state>}*/
-                obcdata: [...state.obcdata, {receivedStr: action.payload.receivedStr, counter: state.obcdata_count}], 
+                obcdata: [...state.obcdata, {IOtype: "From OBC", receivedStr: action.payload.receivedStr, counter: state.obcdata_count}], 
                 obcdata_count: state.obcdata_count + 1 };   // increment the obcdata_count too, it'll be used next time 
     
     // todo: add other action types here

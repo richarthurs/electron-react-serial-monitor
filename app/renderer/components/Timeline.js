@@ -12,9 +12,7 @@ https://stackoverflow.com/questions/28567549/how-to-use-if-within-a-map-return/2
 */
 class Timeline extends Component{
     render(){
-        // Create the list of items
-
-        const timelineItems = this.props.timelinedata.map(function (timelinedata,i){
+        const timelineItems = this.props.timelinedata.map(function (timelinedata,timeline_count){
             let className = "";
 
             if (timelinedata.data_type == "COMMAND"){
@@ -22,7 +20,7 @@ class Timeline extends Component{
                 console.log("cmd");
             }
             return(
-                <ListGroup.Item key={timelinedata.timeline_count} className={className}>
+                <ListGroup.Item key={timelinedata.id} className={className}>
 
                 <Row className="show-grid">
                 <Col xs={12} md={8}>

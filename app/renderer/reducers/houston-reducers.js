@@ -2,7 +2,8 @@ import {
   OBC_SERIAL_RX,
   OBC_SERIAL_RX_DEV,
   SEND_COMMAND,
-  SENT_COMMAND
+  SENT_COMMAND,
+  INCREMENT_EPOCH
 } from "../actions/action-types";
 
 const initialState = {
@@ -11,7 +12,8 @@ const initialState = {
   timelinedata: [],
   timeline_count: 0, // A counter of how many data items we've received. 
   command_sent_count: 0,
-  command_to_send: false
+  command_to_send: false,
+  epoch: 0
 };
 
 /* Reducer
@@ -31,7 +33,7 @@ const rootReducer = (state = initialState, action) => {
           counter: state.timeline_count
         }],
         timeline_count: state.timeline_count + 1
-      }; 
+      };
 
     case OBC_SERIAL_RX_DEV:
       console.log("Data count:", state.timeline_count)
@@ -41,7 +43,7 @@ const rootReducer = (state = initialState, action) => {
           counter: state.timeline_count
         }],
         timeline_count: state.timeline_count + 1
-      }; 
+      };
 
     case SEND_COMMAND:
       console.log("Command", action.payload)
@@ -52,17 +54,23 @@ const rootReducer = (state = initialState, action) => {
         command_to_send: true
       };
 
-      case SENT_COMMAND:
-        return {...state, 
-          commands: state.commands.slice(1),
-          command_to_send: false, 
-          timelinedata: [
-            ...state.timelinedata,
-            {
-              ...action.payload
-            }],
-            timeline_count: state.timeline_count + 1
-        };
+    case SENT_COMMAND:
+      return { ...state,
+        commands: state.commands.slice(1),
+        command_to_send: false,
+        timelinedata: [
+          ...state.timelinedata,
+          {
+            ...action.payload
+          }
+        ],
+        timeline_count: state.timeline_count + 1
+      };
+
+    case INCREMENT_EPOCH:
+      return { ...state,
+        epoch: state.epoch + 1
+      }
 
       // todo: add other action types here
     default:

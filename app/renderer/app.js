@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import Readline from '@serialport/parser-readline'
-import {obcSerialRX, obcSerialRXDev, sentCommand} from "./actions/houston-actions";
+import {obcSerialRX, obcSerialRXDev, sentCommand, incrementEpoch} from "./actions/houston-actions";
 import MainComponent from './components/MainComponent'
 
 const launchpad = '/dev/tty.usbmodemHL512001';
@@ -55,8 +55,16 @@ setInterval(function() {
 }, 15 * 1000); // 60 * 1000 milsec
 
 
+/* Epoch Tick */
+setInterval(function() {
+  store.dispatch(incrementEpoch());
+}, 1000);
+
+/* State Change Handler */
 function stateChange(){
   let _state = store.getState();
+
+  /* Send commands when they are added */
   if(_state.commands.length > 0 && _state.command_to_send == true){
     console.log("Sending command: ", _state.commands[0])
     store.dispatch(sentCommand(_state.commands[0]));

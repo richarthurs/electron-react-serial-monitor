@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import {sendCommand} from '../actions/houston-actions'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -13,7 +15,7 @@ class CommandSubmitter extends Component {
     constructor() {
       super();
       this.state = {
-        title: ""
+        command_input: ""
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,28 +25,33 @@ class CommandSubmitter extends Component {
     }
     handleSubmit(event) {
       event.preventDefault();
-      const { title } = this.state;
+      const { command_input } = this.state;
       const id = uuidv1();
-      this.props.sendCommand({ title, id });
-      this.setState({ title: "" });
+      this.props.sendCommand({ command_input, id });
+      this.setState({ command_input: "" });
     }
     render() {
-      const { title } = this.state;
+      const { command_input } = this.state;
       return (
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              value={title}
-              onChange={this.handleChange}
-            />
-          </div>
-          <button type="secondary" className="btn btn-secondary btn-lg">
-            SUBMIT
-          </button>
+        <Row>
+        <Col xs={8} md={10}>
+            <div className="form-group">
+                <input
+                type="text"
+                className="form-control"
+                id="command_input"
+                value={command_input}
+                onChange={this.handleChange}
+                />
+            </div>
+        </Col>
+        <Col xs={4} md={2}>
+            <button type="secondary" className="btn btn-secondary btn-md">
+            Send
+            </button>
+        </Col>
+        </Row>
         </form>
       );
     }

@@ -22,16 +22,15 @@ const OBCDataList = ({ timelinedata }) => (
     <div>
     <ListGroup>
         {timelinedata.map(timelinedata => (
-            <ListGroup.Item key={timelinedata.counter}>
+            <ListGroup.Item key={timelinedata.timeline_count}>
 
             <Row className="show-grid">
             <Col xs={12} md={8}>
-                <Badge pill variant="primary">{timelinedata.counter}</Badge>
-                {timelinedata.receivedStr} 
+                <Badge pill variant="primary">{timelinedata.epoch_received}</Badge>
+                {timelinedata.text} 
             </Col>
             <Col xs={6} md={4}>
-                <Badge pill variant="success">{timelinedata.IOtype}</Badge>
-                <Badge pill variant="secondary">{timelinedata.msgType}</Badge>
+                <Badge pill variant="success">{timelinedata.data_type}</Badge>
             </Col>
             </Row>
             </ListGroup.Item>
@@ -41,5 +40,5 @@ const OBCDataList = ({ timelinedata }) => (
 );
 
 /* Magic to hook up the state to the props */
-const SerialData = connect(mapStateToProps)(OBCDataList);
-export default SerialData;  /* the name of this component */
+const Timeline = connect(mapStateToProps)(OBCDataList);
+export default Timeline;  /* the name of this component */

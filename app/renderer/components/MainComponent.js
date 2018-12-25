@@ -1,16 +1,16 @@
 import React from "react";
-import SerialData from "./SerialData";
+import Timeline from "./Timeline";
 import CommandSubmitForm from "./CommandSubmit";
 
 const MainComponent = () => (
   <div>
-    <div className="col-md-4 offset-md-1">
+    <div className="col-md-10 offset-md-1">
     <CommandSubmitForm />
     </div>
   <div className="row mt-5">
-    <div className="col-md-7 offset-md-1">
+    <div className="col-md-10 offset-md-1">
     <h2>OBC Data</h2>
-      <SerialData />
+      <Timeline />
     </div>
   </div>
   </div>

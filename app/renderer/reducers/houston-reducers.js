@@ -25,35 +25,29 @@ const rootReducer = (state = initialState, action) => {
     case OBC_SERIAL_RX:
       console.log("Data count:", state.timeline_count)
       return { ...state,
-        /* obcdata: append a new object to the existing obcdata list with the following fields: {receivedStr: <string from serial port>, counter: <an integer pulled from the existing state>}*/
+        /* append a new object to the existing timelinedata list */
         timelinedata: [...state.timelinedata, {
-          msgType: "OBC_RAW",
-          IOtype: "From OBC",
-          receivedStr: action.payload.receivedStr,
+          ...action.payload,
           counter: state.timeline_count
         }],
         timeline_count: state.timeline_count + 1
-      }; // increment the obcdata_count too, it'll be used next time 
+      }; 
 
     case OBC_SERIAL_RX_DEV:
       console.log("Data count:", state.timeline_count)
       return { ...state,
-        /* obcdata: append a new object to the existing obcdata list with the following fields: {receivedStr: <string from serial port>, counter: <an integer pulled from the existing state>}*/
         timelinedata: [...state.timelinedata, {
-          msgType: "OBC_RAW",
-          IOtype: "From OBC - DEV",
-          receivedStr: action.payload.receivedStr,
+          ...action.payload,
           counter: state.timeline_count
         }],
         timeline_count: state.timeline_count + 1
-      }; // increment the obcdata_count too, it'll be used next time 
+      }; 
 
     case SEND_COMMAND:
       console.log("Command", action.payload)
       return { ...state,
         commands: [...state.commands, {
-          IOtype: "Command",
-          receivedStr: action.payload.title
+          ...action.payload
         }],
         command_to_send: true
       };
@@ -65,10 +59,7 @@ const rootReducer = (state = initialState, action) => {
           timelinedata: [
             ...state.timelinedata,
             {
-              msgType: "COMMAND",
-              IOtype: "User",
-              receivedStr: "sdfsdf",
-              counter: state.timeline_count
+              ...action.payload
             }],
             timeline_count: state.timeline_count + 1
         };

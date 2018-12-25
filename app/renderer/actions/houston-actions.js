@@ -1,4 +1,5 @@
 import { OBC_SERIAL_RX, OBC_SERIAL_RX_DEV, SEND_COMMAND, SENT_COMMAND } from "./action-types"; // snag the action type string
+import hash from "object-hash"
 /*  Actions
     - actions return an object with (minimally) a field called "type," which is a string describing the action to take
         - the reducer will switch on the action string to modify the state appropriately
@@ -17,15 +18,60 @@ payload: {
 }
 */
 
-export const obcSerialRX = obcdata_in => ({ type: OBC_SERIAL_RX, payload: {receivedStr: obcdata_in} });
-export const obcSerialRXDev = obcdata_in => ({ type: OBC_SERIAL_RX_DEV, payload: {receivedStr: obcdata_in} });
-
-export function sendCommand(payload){
-    return({type: SEND_COMMAND, payload});
+export function obcSerialRX(obcdata_in){
+    return({
+        type: OBC_SERIAL_RX,
+        payload: {
+            data_type: "OBC RX",
+            id: hash({text: obcdata_in, time: 23}), // todo: hash the time too
+            text: obcdata_in,
+            epoch_received: 0   // todo
+        }
+    });
 }
 
-export function sentCommand(payload){
-    return({type: SENT_COMMAND, payload});
+export function obcSerialRXDev(obcdata_in){
+    return({
+        type: OBC_SERIAL_RX_DEV,
+        payload: {
+            data_type: "OBC RX",
+            id: hash({text: obcdata_in, time: 23}), // todo: hash the time too
+            text: obcdata_in,
+            epoch_received: 0   // todo
+        }
+    });
 }
 
-// todo: add sendCommand action
+
+export function sendCommand(cmd_input){
+    return({
+        type: SEND_COMMAND,
+        payload: {
+            data_type: "COMMAND",
+            id: hash({text: cmd_input.text}),
+            text: cmd_input.command_input,
+            epoch_sent: 0   // todo
+        }
+    });
+}
+
+export function sentCommand(command){
+
+    return({type: SENT_COMMAND, payload: command});
+}
+
+
+
+
+
+export function sendCommand2(payload){
+    return({
+        type: SEND_COMMAND,
+        payload: {
+            data_type: "COMMAND",
+            id: hash({text: payload}),
+            text: payload,
+            epoch_sent: 0   // todo
+        }
+    });
+}

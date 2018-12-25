@@ -59,7 +59,7 @@ function stateChange(){
   let _state = store.getState();
   if(_state.commands.length > 0 && _state.command_to_send == true){
     console.log("Sending command: ", _state.commands[0])
-    store.dispatch(sentCommand());
+    store.dispatch(sentCommand(_state.commands[0]));
   }
 }
 

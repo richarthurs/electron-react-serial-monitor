@@ -2,29 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+// import SerialPort from 'serialport';
 import Readline from '@serialport/parser-readline'
 import {obcSerialRX, obcSerialRXDev, sentCommand, incrementEpoch} from "./actions/houston-actions";
 import MainComponent from './components/MainComponent'
+import OBCSim from './simulation/obc-sim'
 
 const launchpad = '/dev/tty.usbmodemHL512001';
 
-// // Setup the serial port
-// let sp = VirtualSerialPort;
-// // SerialPort.Binding = FakePort;
+const use_real_port = false;
 
-// const OBCport = new sp(launchpad, {baudRate: 115200}, function() {
-//     console.log('Connected to OBCPort', arguments); 
-//     OBCport.write("BLOOP!");
-// });
 
-// // Parser will emit data events when the delimiter is detected
-// // const parser = OBCport.pipe(new Readline({delimeter: '\r\n'}));
+// Fake serial port
+// var SerialPort = require('serialport');
 
-// // Print connection errors
-// OBCport.on('error', function(err) {
-//   console.log('Error: ', err.message)
-// })
+// if (process.env.NODE_ENV == 'development') {
+//   SerialPort = require('virtual-serialport');
+// }
 
+const obc = new OBCSim();
 var SerialPort = require('serialport').SerialPort;
 
 if (process.env.NODE_ENV == 'development') {
@@ -35,10 +31,13 @@ var sp = new SerialPort(launchpad, { baudrate: 115200 }); // still works if NODE
 
 sp.on('open', function (err) {
 
-  sp.on("data", function(data) {
-    console.log("From Arduino: " + data);
-    store.dispatch(obcSerialRX(data))
-  });
+  if(use_real_port){
+    real_parser.on("data", function(data) {
+      console.log("From serial: " + data);
+      store.dispatch(obcSerialRX(data))
+    });
+  }
+
 
   if (process.env.NODE_ENV == 'development') {
     sp.on("dataToDevice", function(data) {
@@ -47,11 +46,12 @@ sp.on('open', function (err) {
     });
   }
 
-  sp.write("BLOOP"); 
+  sp.write("Connected!"); 
 });
 
+/* OBC Data Simulator */
 setInterval(function() {
-  sp.write("BLOOP");
+  sp.write(obc.sayRandom());
 }, 15 * 1000); // 60 * 1000 milsec
 
 

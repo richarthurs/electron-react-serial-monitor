@@ -23,10 +23,14 @@ class Timeline extends Component{
                 <ListGroup.Item key={timelinedata.id} className={className}>
 
                 <Row className="show-grid">
-                <Col xs={12} md={8}>
+                <Col xs={2} md={1}>
                     <Badge pill variant="primary">{timelinedata.epoch_received}</Badge>
-                    {timelinedata.text} 
                 </Col>
+                
+                <Col xs={4} md={7}>
+                {timelinedata.text} 
+                </Col>
+
                 <Col xs={6} md={4}>
                     <Badge pill variant="success">{timelinedata.data_type}</Badge>
                 </Col>

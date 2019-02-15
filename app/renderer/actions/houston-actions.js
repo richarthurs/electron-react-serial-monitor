@@ -1,4 +1,4 @@
-import { OBC_SERIAL_RX, OBC_SERIAL_RX_DEV, SEND_COMMAND, SENT_COMMAND, INCREMENT_EPOCH} from "./action-types"; // snag the action type string
+import { OBC_SERIAL_RX, OBC_SERIAL_RX_DEV, SEND_COMMAND, SENT_COMMAND, INCREMENT_EPOCH, SWITCH_MOCK_OBC} from "./action-types"; // snag the action type string
 import hash from "object-hash";
 import store from '../store';
 
@@ -41,7 +41,7 @@ export function obcSerialRXDev(obcdata_in){
     return({
         type: OBC_SERIAL_RX_DEV,
         payload: {
-            data_type: "OBC RX",
+            data_type: "OBC RX - DEV",
             id: hash({text: obcdata_in, timestamp: Date()}), 
             text: obcdata_in,
             epoch_received: get_epoch() 
@@ -69,4 +69,9 @@ export function sentCommand(command){
 
 export function incrementEpoch(){
     return({type: INCREMENT_EPOCH});
+}
+
+export function switchMockOBC(mock_en){
+    return({type: SWITCH_MOCK_OBC, payload: {enable_mock: mock_en}})
+
 }

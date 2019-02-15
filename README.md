@@ -33,3 +33,7 @@ Started with this boilerplate: https://github.com/jschr/electron-react-redux-boi
 ---- Setting up react and redux store
 https://www.valentinog.com/blog/react-redux-tutorial-beginners/#React_Redux_tutorial_who_this_guide_is_for
 - removed a lot of stuff from the boilerplate to get this working
+
+## Troubleshooting 
+* `EENOINT` error when running `npm run build`: delete the `build` directory
+

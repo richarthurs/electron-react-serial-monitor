@@ -3,8 +3,10 @@ import {
   OBC_SERIAL_RX_DEV,
   SEND_COMMAND,
   SENT_COMMAND,
-  INCREMENT_EPOCH
+  INCREMENT_EPOCH,
+  SWITCH_MOCK_OBC
 } from "../actions/action-types";
+import { strictEqual } from "assert";
 
 const initialState = {
   obcdata: [],
@@ -13,7 +15,8 @@ const initialState = {
   timeline_count: 0, // A counter of how many data items we've received. 
   command_sent_count: 0,
   command_to_send: false,
-  epoch: 0
+  epoch: 0,
+  mockOBC: false
 };
 
 /* Reducer
@@ -72,7 +75,11 @@ const rootReducer = (state = initialState, action) => {
         epoch: state.epoch + 1
       }
 
-      // todo: add other action types here
+    case SWITCH_MOCK_OBC:
+      return {...state, 
+      mockOBC: action.payload.enable_mock
+    }
+
     default:
       return state;
   }
